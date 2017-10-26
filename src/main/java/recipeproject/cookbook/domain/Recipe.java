@@ -4,6 +4,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Data
@@ -49,5 +50,6 @@ public class Recipe {
         ingredient.setRecipe(this);
         ingredients.add(ingredient);
     }
+
 
 }
