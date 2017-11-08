@@ -4,6 +4,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import recipeproject.cookbook.converters.RecipeCommandToRecipe;
+import recipeproject.cookbook.converters.RecipeToRecipeCommand;
 import recipeproject.cookbook.domain.Recipe;
 import recipeproject.cookbook.repositories.RecipeRepository;
 
@@ -22,10 +24,16 @@ public class RecipeServiceImplTest {
     @Mock
     RecipeRepository recipeRepository;
 
+    @Mock
+    RecipeToRecipeCommand recipeToRecipeCommand;
+
+    @Mock
+    RecipeCommandToRecipe recipeCommandToRecipe;
+
     @Before
     public void setUp()throws Exception{
         MockitoAnnotations.initMocks(this);
-        recipeService = new RecipeServiceImpl(recipeRepository);
+        recipeService = new RecipeServiceImpl(recipeRepository, recipeCommandToRecipe, recipeToRecipeCommand);
     }
 
     @Test
@@ -54,6 +62,15 @@ public class RecipeServiceImplTest {
         Set<Recipe> recipes = recipeService.getRecipies();
         assertEquals(recipes.size(), 1);
         verify(recipeRepository, times(1)).findAll();
+        verify(recipeRepository, never()).findById(anyLong());
+    }
+
+    @Test
+    public void testDeleteById() throws Exception{
+        Long isToDelete = Long.valueOf(2L);
+        recipeService.deleteById(isToDelete);
+
+        verify(recipeRepository, times(1)).deleteById(anyLong());
     }
 
 }
