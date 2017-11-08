@@ -1,4 +1,4 @@
 package recipeproject.cookbook.domain;
 
-public class Empty {
+public class NotEmpty {
 }
