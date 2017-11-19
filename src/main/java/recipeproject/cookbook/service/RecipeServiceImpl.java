@@ -2,6 +2,7 @@ package recipeproject.cookbook.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import recipeproject.cookbook.Exceptions.NotFoundException;
 import recipeproject.cookbook.commands.RecipeCommand;
 import recipeproject.cookbook.converters.RecipeCommandToRecipe;
 import recipeproject.cookbook.converters.RecipeToRecipeCommand;
@@ -38,7 +39,8 @@ public class RecipeServiceImpl implements RecipeService{
         Optional<Recipe> recipeOptional = recipeRepository.findById(l);
 
         if(!recipeOptional.isPresent()){
-            throw new RuntimeException("Recipe Not Found!");
+            throw new NotFoundException("Recipe Not Found. No Match On ID " + l);
+            //throw new RuntimeException("Recipe Not Found!");
         }
         return recipeOptional.get();
     }
