@@ -9,7 +9,7 @@ import static org.junit.Assert.*;
 
 public class CategoryToCategoryCommandTest {
 
-    public static  final Long LONG_VALUE = 1L;
+    public static  final String ID_VALUE = "1";
     public static final String DESCRIPTION = "description";
 
     CategoryToCategoryCommand converter;
@@ -33,12 +33,12 @@ public class CategoryToCategoryCommandTest {
     @Test
     public void convert() throws Exception {
         Category cat = new Category();
-        cat.setId(LONG_VALUE);
+        cat.setId(ID_VALUE);
         cat.setDescription(DESCRIPTION);
 
         CategoryCommand catcmd = converter.convert(cat);
 
-        assertEquals(LONG_VALUE, catcmd.getId());
+        assertEquals(ID_VALUE, catcmd.getId());
         assertEquals(DESCRIPTION, catcmd.getDescription());
     }
 

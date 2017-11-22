@@ -8,7 +8,7 @@ import recipeproject.cookbook.domain.Category;
 import static org.junit.Assert.*;
 
 public class CategoryCommandToCategoryTest {
-    public static  final Long LONG_VALUE = 1L;
+    public static  final String ID_VALUE = "1";
     public static final String DESCRIPTION = "description";
 
     CategoryCommandToCategory converter;
@@ -34,12 +34,12 @@ public class CategoryCommandToCategoryTest {
     @Test
     public void convert() throws Exception {
         CategoryCommand catCmd = new CategoryCommand();
-        catCmd.setId(LONG_VALUE);
+        catCmd.setId(ID_VALUE);
         catCmd.setDescription(DESCRIPTION);
 
         Category cat = converter.convert(catCmd);
 
-        assertEquals(LONG_VALUE, cat.getId());
+        assertEquals(ID_VALUE, cat.getId());
         assertEquals(DESCRIPTION, cat.getDescription());
 
 

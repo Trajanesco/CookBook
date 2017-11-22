@@ -8,7 +8,7 @@ import recipeproject.cookbook.domain.Notes;
 import static org.junit.Assert.*;
 
 public class NotesToNotesCommandTest {
-    public static final Long LONG_VALUE = 1L;
+    public static final String ID_VALUE = "1";
     public static final String RECIPE_NOTES = "recipe notes";
 
     NotesToNotesCommand converter;
@@ -32,12 +32,12 @@ public class NotesToNotesCommandTest {
     @Test
     public void convert() throws Exception {
         Notes notes = new Notes();
-        notes.setId(LONG_VALUE);
+        notes.setId(ID_VALUE);
         notes.setRecipeNotes(RECIPE_NOTES);
 
         NotesCommand notesCmd = converter.convert(notes);
 
-        assertEquals(LONG_VALUE, notesCmd.getId());
+        assertEquals(ID_VALUE, notesCmd.getId());
         assertEquals(RECIPE_NOTES, notesCmd.getRecipeNotes());
     }
 

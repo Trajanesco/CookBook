@@ -1,26 +1,40 @@
 package recipeproject.cookbook.bootstrap;
 
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
-import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import recipeproject.cookbook.domain.*;
 import recipeproject.cookbook.repositories.CategoryRepository;
 import recipeproject.cookbook.repositories.RecipeRepository;
 import recipeproject.cookbook.repositories.UnitMeasureRepository;
+import recipeproject.cookbook.repositories.reactive.CategoryReactiveRepository;
+import recipeproject.cookbook.repositories.reactive.RecipeReactiveRepository;
+import recipeproject.cookbook.repositories.reactive.UnitOfMeasureReactiveRepository;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Component
-@Profile("default")
 public class CookBookBootstrap implements ApplicationListener<ContextRefreshedEvent> {
 
     private final CategoryRepository categoryRepository;
     private final RecipeRepository recipeRepository;
     private final UnitMeasureRepository unitMeasureRepository;
+
+    @Autowired
+    UnitOfMeasureReactiveRepository unitOfMeasureReactiveRepository;
+
+    @Autowired
+    CategoryReactiveRepository categoryReactiveRepository;
+
+    @Autowired
+    RecipeReactiveRepository recipeReactiveRepository;
 
     public CookBookBootstrap(CategoryRepository categoryRepository, RecipeRepository recipeRepository, UnitMeasureRepository unitMeasureRepository) {
         this.categoryRepository = categoryRepository;
@@ -29,8 +43,73 @@ public class CookBookBootstrap implements ApplicationListener<ContextRefreshedEv
     }
 
     @Override
+    @Transactional
     public void onApplicationEvent(ContextRefreshedEvent event){
+
+        loadCategories();
+        loadUom();
         recipeRepository.saveAll(getRecipes());
+        log.error("Uom count: " + unitOfMeasureReactiveRepository.count().block().toString());
+        log.error("Cat count: " + categoryReactiveRepository.count().block().toString());
+        log.error("Recipe count: " + recipeReactiveRepository.count().block().toString());
+
+
+    }
+
+    private void loadCategories(){
+        Category cat1 = new Category();
+        cat1.setDescription("American");
+        categoryRepository.save(cat1);
+
+        Category cat2 = new Category();
+        cat2.setDescription("Mexican");
+        categoryRepository.save(cat2);
+
+        Category cat3 = new Category();
+        cat3.setDescription("European");
+        categoryRepository.save(cat3);
+
+        Category cat4 = new Category();
+        cat4.setDescription("Fast Food");
+        categoryRepository.save(cat4);
+
+        Category cat5 = new Category();
+        cat5.setDescription("Italian");
+        categoryRepository.save(cat5);
+    }
+
+    private void loadUom(){
+        UnitOfMeasure uom1 = new UnitOfMeasure();
+        uom1.setUom("Teaspoon");
+        unitMeasureRepository.save(uom1);
+
+        UnitOfMeasure uom7 = new UnitOfMeasure();
+        uom7.setUom("Dash");
+        unitMeasureRepository.save(uom7);
+
+        UnitOfMeasure uom2 = new UnitOfMeasure();
+        uom2.setUom("Tablespoon");
+        unitMeasureRepository.save(uom2);
+
+        UnitOfMeasure uom3 = new UnitOfMeasure();
+        uom3.setUom("Cup");
+        unitMeasureRepository.save(uom3);
+
+        UnitOfMeasure uom6 = new UnitOfMeasure();
+        uom6.setUom("Each");
+        unitMeasureRepository.save(uom6);
+
+        UnitOfMeasure uom5 = new UnitOfMeasure();
+        uom5.setUom("Pinch");
+        unitMeasureRepository.save(uom5);
+
+        UnitOfMeasure uom4 = new UnitOfMeasure();
+        uom4.setUom("Clove");
+        unitMeasureRepository.save(uom4);
+
+        UnitOfMeasure uom8 = new UnitOfMeasure();
+        uom8.setUom("Mililiters");
+        unitMeasureRepository.save(uom8);
     }
 
     private List<Recipe> getRecipes(){
@@ -63,8 +142,10 @@ public class CookBookBootstrap implements ApplicationListener<ContextRefreshedEv
 
         Optional<UnitOfMeasure> pinchUomOptional = unitMeasureRepository.findByUom("Pinch");
 
+
         if(!pinchUomOptional.isPresent()){
             throw new RuntimeException("Expected UOM Not Found");
+
 
         }
 

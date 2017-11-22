@@ -1,11 +1,12 @@
 package recipeproject.cookbook.service;
 
+import reactor.core.publisher.Mono;
 import recipeproject.cookbook.commands.IngredientCommand;
 
 
 public interface IngredientService {
 
-    IngredientCommand findByRecipeIdAndIngredientId(Long recipeId, Long ingredientId);
-    IngredientCommand saveIngredientCommand(IngredientCommand ingredientCommand);
-    void deleteById(Long recipeId, Long id);
+    Mono<IngredientCommand> findByRecipeIdAndIngredientId(String recipeId, String ingredientId);
+    Mono<IngredientCommand> saveIngredientCommand(IngredientCommand ingredientCommand);
+    Mono<Void> deleteById(String recipeId, String id);
 }

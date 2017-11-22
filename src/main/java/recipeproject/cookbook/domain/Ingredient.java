@@ -1,32 +1,25 @@
 package recipeproject.cookbook.domain;
 
 
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 
-import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.UUID;
 
 
 @Setter
 @Getter
-@EqualsAndHashCode(exclude = {"recipe"})
-@Entity
 public class Ingredient {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+    private String id = UUID.randomUUID().toString();
     private String description;
     private BigDecimal amount;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @DBRef
     private UnitOfMeasure uom;
 
-    @ManyToOne
-    private Recipe recipe;
 
     public Ingredient() {
     }
@@ -35,7 +28,7 @@ public class Ingredient {
         this.description = description;
         this.amount = amount;
         this.uom = uom;
-        this.recipe = recipe;
+
     }
 
     public Ingredient(String description, BigDecimal amount, UnitOfMeasure uom) {
@@ -44,7 +37,4 @@ public class Ingredient {
         this.uom = uom;
     }
 
-    public String toString() {
-        return "Ingredient(id=" + this.getId() + ", description=" + this.getDescription() + ", amount=" + this.getAmount() + ", uom=" + this.getUom() + ", recipe=" + this.getRecipe() + ")";
-    }
 }

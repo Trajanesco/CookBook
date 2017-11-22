@@ -1,10 +1,9 @@
 package recipeproject.cookbook.service;
 
+import reactor.core.publisher.Flux;
 import recipeproject.cookbook.commands.UnitOfMeasureCommand;
-
-import java.util.Set;
 
 public interface UnitOfMeasureService {
 
-    Set<UnitOfMeasureCommand> listAllUoms();
+    Flux<UnitOfMeasureCommand> listAllUoms();
 }

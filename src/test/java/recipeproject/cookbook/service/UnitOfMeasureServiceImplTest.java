@@ -4,12 +4,14 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import reactor.core.publisher.Flux;
 import recipeproject.cookbook.commands.UnitOfMeasureCommand;
 import recipeproject.cookbook.converters.UnitOfMeasureToUnitOfMeasureCommand;
 import recipeproject.cookbook.domain.UnitOfMeasure;
-import recipeproject.cookbook.repositories.UnitMeasureRepository;
+import recipeproject.cookbook.repositories.reactive.UnitOfMeasureReactiveRepository;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
@@ -21,13 +23,13 @@ public class UnitOfMeasureServiceImplTest {
     UnitOfMeasureToUnitOfMeasureCommand unitOfMeasureToUnitOfMeasureCommand = new UnitOfMeasureToUnitOfMeasureCommand();
 
     @Mock
-    UnitMeasureRepository unitMeasureRepository;
+    UnitOfMeasureReactiveRepository unitMeasureReactiveRepository;
 
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        service = new UnitOfMeasureServiceImpl(unitMeasureRepository, unitOfMeasureToUnitOfMeasureCommand);
+        service = new UnitOfMeasureServiceImpl(unitMeasureReactiveRepository, unitOfMeasureToUnitOfMeasureCommand);
     }
 
     @Test
@@ -36,19 +38,19 @@ public class UnitOfMeasureServiceImplTest {
         Set<UnitOfMeasure> unitOfMeasures = new HashSet<>();
 
         UnitOfMeasure uom1 = new UnitOfMeasure();
-        uom1.setId(1L);
+        uom1.setId("1");
         unitOfMeasures.add(uom1);
 
         UnitOfMeasure uom2 = new UnitOfMeasure();
-        uom1.setId(2L);
+        uom1.setId("2");
         unitOfMeasures.add(uom2);
 
-        when(unitMeasureRepository.findAll()).thenReturn(unitOfMeasures);
+        when(unitMeasureReactiveRepository.findAll()).thenReturn(Flux.just(uom1, uom2));
 
-        Set<UnitOfMeasureCommand> commands = service.listAllUoms();
+        List<UnitOfMeasureCommand> commands = service.listAllUoms().collectList().block();
 
         assertEquals(2, commands.size());
-        verify(unitMeasureRepository, times(1)).findAll();
+        verify(unitMeasureReactiveRepository, times(1)).findAll();
     }
 
 }

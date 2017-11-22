@@ -1,23 +1,18 @@
 package recipeproject.cookbook.domain;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.data.annotation.Id;
 
-import javax.persistence.*;
-
-
-@Data
-@EqualsAndHashCode(exclude = {"recipe"})
-@Entity
+@Getter
+@Setter
 public class Notes {
 
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    @Lob
+    private String id;
     private String recipeNotes;
-    @OneToOne
-    private Recipe recipe;
+
 
     public Notes() {
     }

@@ -9,7 +9,7 @@ import static org.junit.Assert.*;
 
 public class RecipeToRecipeCommandTest {
 
-    public static  final Long LONG_VALUE = 1L;
+    public static final String ID_VALUE = "1";
     public static final Integer PREP_TIME = Integer.valueOf("5");
     public static final Integer COOK_TIME = Integer.valueOf("8");
     public static final String DESCRIPTION = "description";
@@ -18,10 +18,10 @@ public class RecipeToRecipeCommandTest {
     public static final Integer SERVINGS = Integer.valueOf("4");
     public static final String SOURCE = "source";
     public static final String URL = "www.url.com";
-    public static final Long CAT_ID = 1L;
-    public static final Long INGRED1_ID = 2L;
-    public static final Long INGRED2_ID = 3L;
-    public static final Long NOTES_ID = 4L;
+    public static final String CAT_ID = "1";
+    public static final String INGRED1_ID = "2";
+    public static final String INGRED2_ID = "3";
+    public static final String NOTES_ID = "4";
 
     RecipeToRecipeCommand converter;
 
@@ -46,7 +46,7 @@ public class RecipeToRecipeCommandTest {
     @Test
     public void convert() throws Exception {
         Recipe recipe = new Recipe();
-        recipe.setId(LONG_VALUE);
+        recipe.setId(ID_VALUE);
         recipe.setCookTime(COOK_TIME);
         recipe.setPrepTime(PREP_TIME);
         recipe.setDescription(DESCRIPTION);
@@ -76,7 +76,7 @@ public class RecipeToRecipeCommandTest {
         RecipeCommand recipeCmd  = converter.convert(recipe);
 
         assertNotNull(recipeCmd);
-        assertEquals(LONG_VALUE, recipeCmd.getId());
+        assertEquals(ID_VALUE, recipeCmd.getId());
         assertEquals(COOK_TIME, recipeCmd.getCookTime());
         assertEquals(PREP_TIME, recipeCmd.getPrepTime());
         assertEquals(DESCRIPTION, recipeCmd.getDescription());

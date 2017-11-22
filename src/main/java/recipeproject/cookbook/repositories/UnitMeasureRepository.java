@@ -5,7 +5,7 @@ import recipeproject.cookbook.domain.UnitOfMeasure;
 
 import java.util.Optional;
 
-public interface UnitMeasureRepository extends CrudRepository<UnitOfMeasure, Long> {
+public interface UnitMeasureRepository extends CrudRepository<UnitOfMeasure, String> {
 
 
     Optional<UnitOfMeasure> findByUom(String uom);
